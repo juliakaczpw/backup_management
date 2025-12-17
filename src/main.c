@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
-
+#include "files.h"
 
 
 int main()
@@ -25,14 +25,14 @@ int main()
             tekst_usera[len_usera - 1] = '\0';
         }
 
-        //eee chhyba fgets nei wczyta wiecej znakow niz 4096 ale sprawdz pozniej
+        //eee chhyba fgets nei wczyta wiecej znakow niz okreslony bufor ale sprawdz pozniej
         if (len_usera > 4096)
         {
             printf("Buffer Overflow\n");
             break;
         }
 
-        if (len == 0)
+        if (len_usera == 0)
         {
             continue;
         }
