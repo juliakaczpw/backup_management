@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define ERR(source) (perror(source), fprintf(stderr, "%s:%d\n", __FILE__, __LINE__), exit(EXIT_FAILURE))
+
 
 int dir_exists(const char* path)
 {
@@ -38,7 +38,7 @@ int dir_exists(const char* path)
     }
 
 }
-
+//sprawdzic ukonczenie i readdir jakie roznice eventually
 int dir_is_empty(const char* path) //1-pusty , 0-niepusty , -1 - nie istnieje
 {
     struct dirent* dp;
