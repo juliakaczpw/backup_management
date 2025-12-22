@@ -6,8 +6,8 @@
 
 typedef enum
 {
-    CMD_EMPTY,   // pusta linia
-    CMD_EXIT,    // exit / quit
+    CMD_EMPTY,  // pusta linia
+    CMD_EXIT,   // exit / quit
     CMD_ERROR,
     CMD_ADD,
     CMD_LIST,

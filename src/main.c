@@ -14,10 +14,7 @@
 
 volatile sig_atomic_t last_signal = 0;
 
-static void sig_handler(int sig)
-{
-    last_signal = sig;
-}
+static void sig_handler(int sig) { last_signal = sig; }
 
 static void sethandler(void (*f)(int), int signum)
 {
@@ -45,42 +42,52 @@ int main(void)
 
     while (1)
     {
-        if (last_signal != 0) break;
+        if (last_signal != 0)
+            break;
         printf("backup> ");
         fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin))
         {
-            if (last_signal != 0) break;
-            if (ferror(stdin)) perror("fgets");
+            if (last_signal != 0)
+                break;
+            if (ferror(stdin))
+                perror("fgets");
             break;
         }
 
         size_t n = strlen(line);
-        if (n > 0 && line[n - 1] == '\n') line[n - 1] = '\0';
+        if (n > 0 && line[n - 1] == '\n')
+            line[n - 1] = '\0';
 
         cmd_t cmd;
         cmd_handle(line, &cmd);
 
-        if (cmd.type == CMD_EMPTY) continue;
-        if (cmd.type == CMD_EXIT) break;
-        if (cmd.type == CMD_ERROR) {
+        if (cmd.type == CMD_EMPTY)
+            continue;
+        if (cmd.type == CMD_EXIT)
+            break;
+        if (cmd.type == CMD_ERROR)
+        {
             fprintf(stderr, "Bad syntax.\n");
             continue;
         }
 
-        if (cmd.type == CMD_ADD) start_all_backups(&cmd);
-        else if (cmd.type == CMD_LIST) list_active_backups();
+        if (cmd.type == CMD_ADD)
+            start_all_backups(&cmd);
+        else if (cmd.type == CMD_LIST)
+            list_active_backups();
         else if (cmd.type == CMD_END)
         {
-            if (cmd.src[0] == '\0') {
+            if (cmd.src[0] == '\0')
+            {
                 stop_all_backups();
-            } else {
+            }
+            else
+            {
                 stop_specific_backups(&cmd);
             }
         }
-
-
     }
 
     printf("\nExit and clean up.\n");
