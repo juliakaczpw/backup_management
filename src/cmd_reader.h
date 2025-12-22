@@ -24,4 +24,4 @@ typedef struct
 
 int cmd_handle(const char* cmd, cmd_t* result);
 
-#endif  // CMD_READER_H
+#endif
