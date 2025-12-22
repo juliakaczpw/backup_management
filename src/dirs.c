@@ -1,4 +1,4 @@
-#include "files.h"
+#include "dirs.h"
 
 #include <dirent.h>
 #include <errno.h>
@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 
+#define PATH_MAX 1024
 
 int dir_exists(const char* path)
 {
@@ -39,7 +40,7 @@ int dir_exists(const char* path)
 
 }
 //sprawdzic ukonczenie i readdir jakie roznice eventually
-int dir_is_empty(const char* path) //1-pusty , 0-niepusty , -1 - nie istnieje
+int dir_is_empty(const char* path)
 {
     struct dirent* dp;
     DIR* dir = opendir(path);
@@ -61,44 +62,33 @@ int dir_is_empty(const char* path) //1-pusty , 0-niepusty , -1 - nie istnieje
         }
 
     }
-    closedir(dir); //jesli nie znaleznilsimy nic to elo
+    closedir(dir);
     return 1;//psuto
 
 
 }
-//tu poprawic usatwic sobie zmienne poprostu zamaist wywolywac funckje po 3 razy
-int is_target(const char* trgtpath)
-{
-    if (dir_exists(trgtpath)==0) //niesitnieje
-    {
-        if (mkdir(trgtpath, 0777)==0)
-        {
-            return 0;
-        }else
-        {
-            return -1;
-        }
 
-    }else if (dir_exists(trgtpath)==1) //sitnieje
-    {
 
-        if (dir_is_empty(trgtpath)==1)
-        {
-            return 0;
-        }else if (dir_is_empty(trgtpath)==0)
-        {
-            errno=ENOTEMPTY;
-            return -1;
-        }
-        else if (dir_is_empty(trgtpath)==-1)
-        {
-            return -1;
-        }
 
-    }else if (dir_exists(trgtpath)==-1)
-    {
+int is_target(const char* trgtpath) {
+    int exists = dir_exists(trgtpath);
+
+    if (exists == 0) {
+        //niesitnieje robimy
+        if (mkdir(trgtpath, 0777) == 0) return 0;
         return -1;
     }
-    return -1;
 
+    if (exists == 1) {
+        //istnieje - pusty
+        int empty = dir_is_empty(trgtpath);
+        if (empty == 1) return 0;
+        if (empty == 0) {
+            errno = ENOTEMPTY;
+            return -1;
+        }
+    }
+
+    return -1;
 }
+

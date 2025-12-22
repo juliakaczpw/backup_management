@@ -13,6 +13,9 @@
 #include <unistd.h>
 // limits do PATH_MAX
 
+
+
+
 static int starts_with_dir(const char *path, const char *root)
 {
     size_t n = strlen(root);
